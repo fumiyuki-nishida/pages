@@ -655,7 +655,7 @@ export default function WorkoutApp() {
 
   return (
     <div style={{
-      minHeight: "100vh",
+      minHeight: "100dvh", height: "100dvh",
       background: "linear-gradient(170deg, #0a0a0f 0%, #111118 40%, #0d1117 100%)",
       color: "#e8e6e3",
       fontFamily: "'JetBrains Mono', 'SF Mono', 'Fira Code', monospace",
@@ -681,18 +681,21 @@ export default function WorkoutApp() {
 
       <div style={{
         position: "relative", zIndex: 1, width: "100%", maxWidth: 440,
-        padding: "16px 16px env(safe-area-inset-bottom, 16px) 16px",
-        display: "flex", flexDirection: "column", minHeight: "100vh",
+        padding: "12px 16px env(safe-area-inset-bottom, 12px) 16px",
+        display: "flex", flexDirection: "column",
+        minHeight: "100dvh", maxHeight: "100dvh", height: "100dvh",
+        overflow: "hidden", boxSizing: "border-box",
       }}>
         {/* Header */}
         <div style={{
           display: "flex", alignItems: "center", justifyContent: "space-between",
-          marginBottom: 12, paddingBottom: 12,
+          marginBottom: 8, paddingBottom: 8,
           borderBottom: "1px solid rgba(255,255,255,0.06)",
+          flexShrink: 0,
         }}>
           <div>
             <h1 style={{
-              fontSize: 20, fontWeight: 700, margin: 0, letterSpacing: "-0.5px",
+              fontSize: 18, fontWeight: 700, margin: 0, letterSpacing: "-0.5px",
               background: "linear-gradient(135deg, #f0f0f0 0%, #888 100%)",
               WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
             }}>HOME WORKOUT</h1>
@@ -706,7 +709,7 @@ export default function WorkoutApp() {
                 {wakeLockActive && (
                   <span style={{ fontSize: 10, color: "#4ecdc4", opacity: 0.7 }} title="画面ロック防止中">☀</span>
                 )}
-                <span style={{ fontSize: 24, fontWeight: 700, fontVariantNumeric: "tabular-nums", color: "#c8ff00" }}>
+                <span style={{ fontSize: 20, fontWeight: 700, fontVariantNumeric: "tabular-nums", color: "#c8ff00" }}>
                   {formatTime(totalTime)}
                 </span>
               </div>
@@ -716,15 +719,15 @@ export default function WorkoutApp() {
         </div>
 
         {phase !== "idle" && (
-          <div style={{ height: 3, background: "rgba(255,255,255,0.06)", borderRadius: 2, marginBottom: 16, overflow: "hidden" }}>
+          <div style={{ height: 3, background: "rgba(255,255,255,0.06)", borderRadius: 2, marginBottom: 8, overflow: "hidden", flexShrink: 0 }}>
             <div style={{ height: "100%", width: `${progress}%`, background: "linear-gradient(90deg, #c8ff00, #88cc00)", borderRadius: 2, transition: "width 0.5s ease" }} />
           </div>
         )}
 
         {/* ─── IDLE ─── */}
         {phase === "idle" && (
-          <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8, flexShrink: 0 }}>
               <h2 style={{ fontSize: 13, color: "#666", letterSpacing: "2px", margin: 0, fontWeight: 500 }}>
                 TODAY'S MENU — {menu.length} EXERCISES
               </h2>
@@ -734,7 +737,7 @@ export default function WorkoutApp() {
                 fontWeight: 600, cursor: "pointer", fontFamily: "inherit",
               }}>🔀 SHUFFLE</button>
             </div>
-            <div style={{ flex: 1, overflowY: "auto", marginBottom: 12 }}>
+            <div style={{ flex: 1, overflowY: "auto", marginBottom: 8, minHeight: 0 }}>
               {menu.map((e, i) => {
                 const cc = POOL[e.category]?.color || "#888";
                 return (
@@ -768,9 +771,9 @@ export default function WorkoutApp() {
                 );
               })}
             </div>
-            <div style={{ paddingBottom: 20 }}>
+            <div style={{ paddingBottom: 10, flexShrink: 0 }}>
               <button onClick={startWorkout} style={{
-                width: "100%", padding: "18px", border: "none", borderRadius: 12,
+                width: "100%", padding: "16px", border: "none", borderRadius: 12,
                 background: "linear-gradient(135deg, #c8ff00 0%, #a0dd00 100%)",
                 color: "#0a0a0f", fontSize: 16, fontWeight: 800,
                 letterSpacing: "2px", cursor: "pointer", fontFamily: "inherit",
@@ -785,32 +788,34 @@ export default function WorkoutApp() {
 
         {/* ─── ACTIVE ─── */}
         {phase === "active" && ex && (
-          <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-            <div style={{ textAlign: "center", marginBottom: 4 }}>
-              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 8, marginBottom: 4 }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0 }}>
+            <div style={{ textAlign: "center", flexShrink: 0 }}>
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 6, marginBottom: 2 }}>
                 <span style={{ fontSize: 11, color: "#666", letterSpacing: "2px" }}>{exIdx + 1} / {menu.length}</span>
                 <span style={{ fontSize: 9, padding: "1px 6px", borderRadius: 4, background: catColor + "18", color: catColor, fontWeight: 700 }}>
                   {POOL[ex.category]?.label}
                 </span>
               </div>
-              <div style={{ fontSize: 30, marginBottom: 2 }}>{ex.icon}</div>
-              <h2 style={{ fontSize: 20, fontWeight: 800, margin: "0 0 2px 0", letterSpacing: "-0.5px" }}>{ex.name}</h2>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 2 }}>
+                <span style={{ fontSize: 22 }}>{ex.icon}</span>
+                <h2 style={{ fontSize: 18, fontWeight: 800, margin: 0, letterSpacing: "-0.5px" }}>{ex.name}</h2>
+              </div>
 
               {/* Inline illustration (compact) */}
               <div onClick={() => openModal(ex, ex.category)} style={{
-                margin: "4px auto", maxWidth: 240, cursor: "pointer",
-                background: "rgba(255,255,255,0.02)", borderRadius: 10,
-                padding: "6px 4px", border: "1px solid rgba(255,255,255,0.04)",
+                margin: "2px auto", maxWidth: 200, cursor: "pointer",
+                background: "rgba(255,255,255,0.02)", borderRadius: 8,
+                padding: "3px 2px", border: "1px solid rgba(255,255,255,0.04)",
               }}>
                 <ExerciseIllustration name={ex.name} category={ex.category} color={catColor} />
               </div>
 
-              <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 6 }}>
+              <div style={{ display: "flex", justifyContent: "center", gap: 5, marginTop: 4 }}>
                 {Array.from({ length: ex.sets }).map((_, i) => (
                   <div key={i} style={{
-                    width: 30, height: 30, borderRadius: 8,
+                    width: 26, height: 26, borderRadius: 6,
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: 12, fontWeight: 700,
+                    fontSize: 11, fontWeight: 700,
                     background: completedSets[markKey(exIdx, i)] ? catColor + "22"
                       : i === setIdx ? catColor + "15" : "rgba(255,255,255,0.03)",
                     border: i === setIdx ? `2px solid ${catColor}`
@@ -820,22 +825,22 @@ export default function WorkoutApp() {
                   }}>{completedSets[markKey(exIdx, i)] ? "✓" : i + 1}</div>
                 ))}
               </div>
-              <div style={{ fontSize: 10, color: "#555", marginTop: 4 }}>SET {setIdx + 1} / {ex.sets}</div>
+              <div style={{ fontSize: 10, color: "#555", marginTop: 2 }}>SET {setIdx + 1} / {ex.sets}</div>
             </div>
 
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: 0 }}>
               {ex.type === "reps" ? (
                 <>
-                  <div style={{ fontSize: 72, fontWeight: 900, lineHeight: 1, fontVariantNumeric: "tabular-nums", color: "#fff", marginBottom: 4 }}>{repCount}</div>
-                  <div style={{ fontSize: 13, color: "#666", marginBottom: 20 }}>/ {ex.reps} reps</div>
+                  <div style={{ fontSize: 56, fontWeight: 900, lineHeight: 1, fontVariantNumeric: "tabular-nums", color: "#fff", marginBottom: 2 }}>{repCount}</div>
+                  <div style={{ fontSize: 12, color: "#666", marginBottom: 12 }}>/ {ex.reps} reps</div>
                   <button onClick={addRep} style={{
-                    width: 160, height: 160, borderRadius: "50%",
+                    width: 130, height: 130, borderRadius: "50%",
                     border: `3px solid ${catColor}55`,
                     background: `radial-gradient(circle at 40% 40%, ${catColor}14 0%, ${catColor}05 100%)`,
-                    color: catColor, fontSize: 16, fontWeight: 700,
+                    color: catColor, fontSize: 15, fontWeight: 700,
                     cursor: "pointer", fontFamily: "inherit",
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    flexDirection: "column", gap: 4,
+                    flexDirection: "column", gap: 2,
                     boxShadow: `0 0 60px ${catColor}10`, transition: "transform 0.08s",
                   }}
                     onMouseDown={(ev) => ev.currentTarget.style.transform = "scale(0.93)"}
@@ -843,19 +848,19 @@ export default function WorkoutApp() {
                     onTouchStart={(ev) => ev.currentTarget.style.transform = "scale(0.93)"}
                     onTouchEnd={(ev) => ev.currentTarget.style.transform = "scale(1)"}
                   >
-                    <span style={{ fontSize: 24 }}>TAP</span>
-                    <span style={{ fontSize: 11, opacity: 0.6 }}>カウント</span>
+                    <span style={{ fontSize: 20 }}>TAP</span>
+                    <span style={{ fontSize: 10, opacity: 0.6 }}>カウント</span>
                   </button>
                 </>
               ) : (
                 <>
-                  <div style={{ position: "relative", width: 170, height: 170, marginBottom: 12 }}>
-                    <svg width="170" height="170" style={{ transform: "rotate(-90deg)" }}>
-                      <circle cx="85" cy="85" r="76" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5" />
-                      <circle cx="85" cy="85" r="76" fill="none"
+                  <div style={{ position: "relative", width: 140, height: 140, marginBottom: 8 }}>
+                    <svg width="140" height="140" style={{ transform: "rotate(-90deg)" }}>
+                      <circle cx="70" cy="70" r="62" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5" />
+                      <circle cx="70" cy="70" r="62" fill="none"
                         stroke={timer > 5 ? catColor : "#ff4444"} strokeWidth="5"
-                        strokeDasharray={2 * Math.PI * 76}
-                        strokeDashoffset={2 * Math.PI * 76 * (1 - timer / ex.duration)}
+                        strokeDasharray={2 * Math.PI * 62}
+                        strokeDashoffset={2 * Math.PI * 62 * (1 - timer / ex.duration)}
                         strokeLinecap="round"
                         style={{ transition: "stroke-dashoffset 1s linear, stroke 0.3s" }}
                       />
@@ -864,29 +869,29 @@ export default function WorkoutApp() {
                       position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
                       display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
                     }}>
-                      <div style={{ fontSize: 48, fontWeight: 900, fontVariantNumeric: "tabular-nums", color: timer > 5 ? "#fff" : "#ff4444", transition: "color 0.3s" }}>{timer}</div>
-                      <div style={{ fontSize: 11, color: "#666" }}>秒</div>
+                      <div style={{ fontSize: 40, fontWeight: 900, fontVariantNumeric: "tabular-nums", color: timer > 5 ? "#fff" : "#ff4444", transition: "color 0.3s" }}>{timer}</div>
+                      <div style={{ fontSize: 10, color: "#666" }}>秒</div>
                     </div>
                   </div>
                   {!timerRunning && timer > 0 && (
                     <button onClick={() => { playStart(); setTimerRunning(true); }} style={{
-                      padding: "10px 28px", borderRadius: 10, border: `2px solid ${catColor}`,
-                      background: "transparent", color: catColor, fontSize: 14, fontWeight: 700,
+                      padding: "8px 24px", borderRadius: 8, border: `2px solid ${catColor}`,
+                      background: "transparent", color: catColor, fontSize: 13, fontWeight: 700,
                       cursor: "pointer", fontFamily: "inherit",
                     }}>▶ START</button>
                   )}
                   {timerRunning && (
                     <button onClick={() => setTimerRunning(false)} style={{
-                      padding: "10px 28px", borderRadius: 10, border: "2px solid #666",
-                      background: "transparent", color: "#888", fontSize: 14, fontWeight: 700,
+                      padding: "8px 24px", borderRadius: 8, border: "2px solid #666",
+                      background: "transparent", color: "#888", fontSize: 13, fontWeight: 700,
                       cursor: "pointer", fontFamily: "inherit",
                     }}>⏸ PAUSE</button>
                   )}
                   {timer === 0 && (
                     <button onClick={completeTimed} style={{
-                      padding: "12px 32px", borderRadius: 10, border: "none",
+                      padding: "10px 28px", borderRadius: 8, border: "none",
                       background: `linear-gradient(135deg, ${catColor} 0%, ${catColor}cc 100%)`,
-                      color: "#0a0a0f", fontSize: 14, fontWeight: 800,
+                      color: "#0a0a0f", fontSize: 13, fontWeight: 800,
                       cursor: "pointer", fontFamily: "inherit", boxShadow: `0 0 30px ${catColor}25`,
                     }}>✓ COMPLETE</button>
                   )}
@@ -895,11 +900,11 @@ export default function WorkoutApp() {
             </div>
 
             {ex.type === "reps" && (
-              <div style={{ textAlign: "center", paddingBottom: 16 }}>
+              <div style={{ textAlign: "center", paddingBottom: 4, flexShrink: 0 }}>
                 <button onClick={completeSet} style={{
-                  padding: "10px 24px", borderRadius: 10,
+                  padding: "8px 20px", borderRadius: 8,
                   border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.03)",
-                  color: "#888", fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "inherit",
+                  color: "#888", fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit",
                 }}>セット完了 →</button>
               </div>
             )}
@@ -908,8 +913,8 @@ export default function WorkoutApp() {
 
         {/* ─── REST ─── */}
         {(phase === "resting" || phase === "betweenExercise") && (
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", overflowY: "auto" }}>
-            <div style={{ fontSize: 13, letterSpacing: "3px", color: "#c8ff00", marginBottom: 8, fontWeight: 600 }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: 0 }}>
+            <div style={{ fontSize: 12, letterSpacing: "3px", color: "#c8ff00", marginBottom: 6, fontWeight: 600, flexShrink: 0 }}>
               {phase === "resting" ? "REST" : "NEXT EXERCISE"}
             </div>
             {phase === "betweenExercise" && menu[exIdx + 1] && (() => {
@@ -917,30 +922,32 @@ export default function WorkoutApp() {
               const nc = POOL[nex.category]?.color || "#888";
               return (
                 <>
-                  <div style={{ fontSize: 16, fontWeight: 700, color: "#ddd", marginBottom: 4, textAlign: "center" }}>
-                    {nex.icon} {nex.name}
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4, flexShrink: 0 }}>
+                    <span style={{ fontSize: 14, fontWeight: 700, color: "#ddd" }}>
+                      {nex.icon} {nex.name}
+                    </span>
+                    <span style={{
+                      fontSize: 9, padding: "1px 6px", borderRadius: 4,
+                      background: nc + "18", color: nc, fontWeight: 700,
+                    }}>{POOL[nex.category]?.label}</span>
                   </div>
-                  <span style={{
-                    fontSize: 9, padding: "1px 6px", borderRadius: 4, marginBottom: 8,
-                    background: nc + "18", color: nc, fontWeight: 700,
-                  }}>{POOL[nex.category]?.label}</span>
                   {/* Preview illustration */}
                   <div onClick={() => openModal(nex, nex.category)} style={{
-                    maxWidth: 200, width: "100%", cursor: "pointer",
-                    background: "rgba(255,255,255,0.02)", borderRadius: 10,
-                    padding: "4px 2px", marginBottom: 10, border: "1px solid rgba(255,255,255,0.04)",
+                    maxWidth: 180, width: "100%", cursor: "pointer", flexShrink: 0,
+                    background: "rgba(255,255,255,0.02)", borderRadius: 8,
+                    padding: "2px 2px", marginBottom: 8, border: "1px solid rgba(255,255,255,0.04)",
                   }}>
                     <ExerciseIllustration name={nex.name} category={nex.category} color={nc} />
                   </div>
                 </>
               );
             })()}
-            <div style={{ position: "relative", width: 160, height: 160, marginBottom: 20 }}>
-              <svg width="160" height="160" style={{ transform: "rotate(-90deg)" }}>
-                <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5" />
-                <circle cx="80" cy="80" r="70" fill="none" stroke="#4488ff" strokeWidth="5"
-                  strokeDasharray={2 * Math.PI * 70}
-                  strokeDashoffset={2 * Math.PI * 70 * (1 - restProgress)}
+            <div style={{ position: "relative", width: 130, height: 130, marginBottom: 14, flexShrink: 0 }}>
+              <svg width="130" height="130" style={{ transform: "rotate(-90deg)" }}>
+                <circle cx="65" cy="65" r="56" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="4" />
+                <circle cx="65" cy="65" r="56" fill="none" stroke="#4488ff" strokeWidth="4"
+                  strokeDasharray={2 * Math.PI * 56}
+                  strokeDashoffset={2 * Math.PI * 56 * (1 - restProgress)}
                   strokeLinecap="round" style={{ transition: "stroke-dashoffset 1s linear" }}
                 />
               </svg>
@@ -948,15 +955,15 @@ export default function WorkoutApp() {
                 position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
                 display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
               }}>
-                <div style={{ fontSize: 46, fontWeight: 900, fontVariantNumeric: "tabular-nums", color: "#fff" }}>{restTime}</div>
-                <div style={{ fontSize: 11, color: "#666" }}>秒</div>
+                <div style={{ fontSize: 38, fontWeight: 900, fontVariantNumeric: "tabular-nums", color: "#fff" }}>{restTime}</div>
+                <div style={{ fontSize: 10, color: "#666" }}>秒</div>
               </div>
             </div>
             <button onClick={nextAfterRest} style={{
-              padding: "14px 40px", borderRadius: 10, border: "none",
+              padding: "12px 36px", borderRadius: 10, border: "none", flexShrink: 0,
               background: restTime === 0 ? "linear-gradient(135deg, #c8ff00 0%, #a0dd00 100%)" : "rgba(255,255,255,0.06)",
               color: restTime === 0 ? "#0a0a0f" : "#aaa",
-              fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "inherit",
+              fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit",
               boxShadow: restTime === 0 ? "0 0 30px rgba(200,255,0,0.15)" : "none", transition: "all 0.3s",
             }}>{restTime === 0 ? "▶ NEXT" : "SKIP →"}</button>
           </div>
@@ -964,49 +971,49 @@ export default function WorkoutApp() {
 
         {/* ─── DONE ─── */}
         {phase === "done" && (
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" }}>
-            <div style={{ fontSize: 60, marginBottom: 16 }}>🏆</div>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", minHeight: 0 }}>
+            <div style={{ fontSize: 48, marginBottom: 10 }}>🏆</div>
             <h2 style={{
-              fontSize: 28, fontWeight: 900, margin: "0 0 8px 0",
+              fontSize: 24, fontWeight: 900, margin: "0 0 6px 0",
               background: "linear-gradient(135deg, #c8ff00 0%, #88cc00 100%)",
               WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
             }}>COMPLETE!</h2>
-            <div style={{ fontSize: 14, color: "#888", marginBottom: 24 }}>おつかれさまでした！</div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, width: "100%", maxWidth: 280, marginBottom: 24 }}>
-              <div style={{ padding: "16px", borderRadius: 10, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
-                <div style={{ fontSize: 28, fontWeight: 800, color: "#c8ff00" }}>{formatTime(totalTime)}</div>
-                <div style={{ fontSize: 11, color: "#666", letterSpacing: "1px" }}>TIME</div>
+            <div style={{ fontSize: 13, color: "#888", marginBottom: 16 }}>おつかれさまでした！</div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, width: "100%", maxWidth: 260, marginBottom: 16 }}>
+              <div style={{ padding: "12px", borderRadius: 10, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
+                <div style={{ fontSize: 24, fontWeight: 800, color: "#c8ff00" }}>{formatTime(totalTime)}</div>
+                <div style={{ fontSize: 10, color: "#666", letterSpacing: "1px" }}>TIME</div>
               </div>
-              <div style={{ padding: "16px", borderRadius: 10, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
-                <div style={{ fontSize: 28, fontWeight: 800, color: "#c8ff00" }}>{doneSets}</div>
-                <div style={{ fontSize: 11, color: "#666", letterSpacing: "1px" }}>SETS</div>
+              <div style={{ padding: "12px", borderRadius: 10, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
+                <div style={{ fontSize: 24, fontWeight: 800, color: "#c8ff00" }}>{doneSets}</div>
+                <div style={{ fontSize: 10, color: "#666", letterSpacing: "1px" }}>SETS</div>
               </div>
             </div>
-            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 6, marginBottom: 28 }}>
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 5, marginBottom: 20 }}>
               {CATEGORIES.map((cat) => {
                 const count = menu.filter((e) => e.category === cat).length;
                 if (!count) return null;
                 return (
                   <span key={cat} style={{
-                    fontSize: 10, padding: "3px 8px", borderRadius: 4,
+                    fontSize: 9, padding: "2px 6px", borderRadius: 4,
                     background: POOL[cat].color + "18", color: POOL[cat].color, fontWeight: 700,
                   }}>{POOL[cat].label} ×{count}</span>
                 );
               })}
             </div>
             <button onClick={resetWorkout} style={{
-              padding: "16px 40px", borderRadius: 12, border: "2px solid rgba(200,255,0,0.3)",
-              background: "transparent", color: "#c8ff00", fontSize: 15, fontWeight: 700,
+              padding: "14px 36px", borderRadius: 12, border: "2px solid rgba(200,255,0,0.3)",
+              background: "transparent", color: "#c8ff00", fontSize: 14, fontWeight: 700,
               cursor: "pointer", fontFamily: "inherit", letterSpacing: "1px",
             }}>↻ NEW MENU</button>
           </div>
         )}
 
         {phase !== "idle" && phase !== "done" && (
-          <div style={{ textAlign: "center", paddingBottom: 12, paddingTop: 8, borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+          <div style={{ textAlign: "center", paddingBottom: 6, paddingTop: 4, borderTop: "1px solid rgba(255,255,255,0.04)", flexShrink: 0 }}>
             <button onClick={resetWorkout} style={{
-              padding: "8px 20px", borderRadius: 8, border: "none", background: "transparent",
-              color: "#444", fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "inherit",
+              padding: "6px 16px", borderRadius: 6, border: "none", background: "transparent",
+              color: "#444", fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit",
             }}>■ RESET</button>
           </div>
         )}
